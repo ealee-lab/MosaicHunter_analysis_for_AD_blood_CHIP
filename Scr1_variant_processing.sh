@@ -4,6 +4,8 @@
 # Description: Processes MosaicHunter (SNV) and Pisces (Indel) outputs, applies
 #              depth filtering, Fisher's exact test filtering, ANNOVAR functional
 #              annotation, and generates final VCF/summary files without sbatch.
+#              "AD_panel.sample.clinical.tsv" has age information before updates.
+#              Use age information in "SupplTable2_Somatic_Variant_Calls.xlsx".
 # ==============================================================================
 
 set -euo pipefail
