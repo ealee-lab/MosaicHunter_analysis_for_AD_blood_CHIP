@@ -2,7 +2,7 @@
 # Pipeline: CHIP Variant Whitelist Filtering, Gene Annotation, and Merging
 # Description: Merged R script that performs SNV and indel whitelist filtering,
 #              gene annotation processing, artifact removal, clinical metadata
-#              integration (via SupplTable2), and final combined dataset generation.
+#              integration (via SupplTable1 clinical information), and final combined dataset generation.
 # ==============================================================================
 
 # Load necessary libraries for Excel reading, table joining, and bioinformatics
@@ -13,19 +13,23 @@ library(tidyr)
 library(org.Hs.eg.db)
 
 # ==============================================================================
-# Helper Function: Load Clinical Metadata from SupplTable2
+# Helper Function: Load Clinical Metadata from SupplTable1
 # ==============================================================================
 load_clinical_data <- function() {
-  suppl_path <- "SupplTable2_Somatic_Variant_Calls.xlsx"
-  # Read the somatic variant calls sheet which contains sample-level clinical attributes
-  raw_data <- read_excel(suppl_path, sheet = "Somatic_Variant_Calls")
+  suppl_path <- "SupplTable1_Sample_Information.xlsx"
+  # Read the sample information sheet which contains clinical attributes
+  raw_data <- read_excel(suppl_path, sheet = "Sample_Information")
   
-  # Extract distinct clinical attributes per sample ID
+  # Extract and standardize clinical attributes per sample ID
   raw_data %>% 
-    select(ID, ApoE, Age, Sex, MMSE, Group, Batch) %>% 
+    select(ID, `APOE genotype`, `Age (at blood collection)`, Sex, MMSE, Group, Batch) %>% 
     distinct() %>%
+    rename(
+      ApoE = `APOE genotype`,
+      Age = `Age (at blood collection)`
+    ) %>%
     mutate(
-      Sex = factor(Sex, levels = c("Female", "Male")),
+      Sex = factor(Sex, levels = c("Female", "Male", "F", "M")),
       ApoE = factor(ApoE, levels = sort(unique(ApoE))),
       Cogdx = factor(Group, levels = c("CTRL", "C", "AD"))
     ) %>%
@@ -188,7 +192,7 @@ input_snv$CHIP <- sapply(input_snv$CHIP, function(x) isTRUE(x == "whitelist"))
 gene_anno_snv <- read.delim(sprintf("%s.gene_anno.tsv", snv_header), header = FALSE, stringsAsFactors = FALSE)
 colnames(gene_anno_snv) <- c("Chr", "Pos", "Ref", "Alt", "Symbol", "Location", "Type", "Impact")
 
-# Load revised clinical metadata and merge with SNVs
+# Load clinical metadata from SupplTable1 and merge with SNVs
 id_clinical <- load_clinical_data()
 merged_snv <- unique(merge(merge(gene_anno_snv, input_snv, by = c("Chr", "Pos", "Ref", "Alt")), id_clinical, by = "ID"))
 write.table(merged_snv[, which(colnames(merged_snv) != "Location")], file = sprintf("%s.merged.tsv", snv_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
@@ -211,7 +215,7 @@ input_indel$CHIP <- sapply(input_indel$CHIP, function(x) isTRUE(x == "whitelist"
 gene_anno_indel <- read.delim(sprintf("%s.gene_anno.tsv", indel_header), header = FALSE, stringsAsFactors = FALSE)
 colnames(gene_anno_indel) <- c("Chr", "Start", "End", "Ref", "Alt", "Symbol", "Location", "Type", "Impact")
 
-# Merge indel annotations with revised clinical metadata
+# Merge indel annotations with clinical metadata from SupplTable1
 merged_indel <- unique(merge(merge(gene_anno_indel, input_indel, by = c("Chr", "Start", "End", "Ref", "Alt")), id_clinical, by = "ID"))
 write.table(merged_indel, file = sprintf("%s.merged.tsv", indel_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
 
