@@ -182,7 +182,7 @@ df_indel_out2 <- merge(df_indel_ori, merge(df_indel_ori, df_indel_out, all.x = T
 write.table(df_indel_out2, paste(indel_header, ".WLannotated.tsv", sep = ""), quote = FALSE, sep = "\t", row.names = FALSE, col.names = FALSE)
 
 
-print("=== Step 3: SNV Annotation & Filtering (scr5 equivalent) ===")
+print("=== Step 3: SNV Annotation & Filtering ===")
 snv_out_header <- "AD_panel.MH.rev.addage.loose"
 input_snv <- read.delim(sprintf("%s.WLannotated.tsv", snv_header), header = FALSE, stringsAsFactors = FALSE)[, c(1:4, 6:7, 9, 10, 15)]
 colnames(input_snv) <- c("Chr", "Pos", "Ref", "Alt", "Ref_num", "Alt_num", "ID", "Gnomad", "CHIP")
@@ -224,7 +224,7 @@ merged_indel_filtered <- merged_indel[merged_indel$Ref_num + merged_indel$Alt_nu
 write.table(merged_indel_filtered, file = sprintf("%s.merged_filtered.tsv", indel_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
 
 
-print("=== Step 5: Merge Filtered SNVs and Indels (scr7 equivalent) ===")
+print("=== Step 5: Merge Filtered SNVs and Indels ===")
 df_snv_filt <- read.table(sprintf("%s.merged_filtered.tsv", snv_out_header), sep = "\t", header = TRUE)
 df_indel_filt <- read.table(sprintf("%s.merged_filtered.tsv", indel_out_header), sep = "\t", header = TRUE)
 
