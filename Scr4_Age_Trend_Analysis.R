@@ -4,7 +4,6 @@
 #              CHIP mutations change with age in CTRL, C and AD, and how CHIP status
 #              relates to cognitive score (MMSE) within AD:
 #                - Age distribution by group                          Fig 1Aa
-#                - Somatic mutation carrier proportion by age         Supp Fig 5
 #                - CHIP carrier proportion by age (+ trend lm)        Fig 2A
 #                - CHIP mutation rate per bp by age group             Fig 2B
 #                - VAF of somatic / CHIP mutations vs. age            ED Fig 8
@@ -118,13 +117,10 @@ load_sample_info <- function(path, sheet) {
 # 95% binomial CI of k / n (lower, upper)
 prop_ci <- function(k, n) suppressWarnings(prop.test(k, n))$conf.int
 
-# Carrier proportions (any somatic / CHIP mutation) with 95% CIs, per stratum
+# CHIP carrier proportions with 95% CIs, per stratum
 summarise_carriers <- function(df, by) {
   df %>% group_by(across(all_of(by))) %>%
-    summarise(Prop         = mean(Carrier),
-              Prop_LB      = prop_ci(sum(Carrier), n())[1],
-              Prop_UB      = prop_ci(sum(Carrier), n())[2],
-              Prop_chip    = mean(Carrier_chip),
+    summarise(Prop_chip    = mean(Carrier_chip),
               Prop_chip_LB = prop_ci(sum(Carrier_chip), n())[1],
               Prop_chip_UB = prop_ci(sum(Carrier_chip), n())[2],
               Total        = n(), .groups = "drop") %>%
@@ -276,11 +272,9 @@ variants_raw$Class <- ifelse(variants_raw$Ref %in% c("A", "C", "G", "T") &
                              variants_raw$Alt %in% c("A", "C", "G", "T"), "snp", "indel")
 variants_all <- merge(variants_raw, id_all[, c("ID", "ApoE", "Age", "Age_group", "Group")], by = "ID")
 
-# Per-sample mutation counts and carrier status (samples without coverage are dropped)
+# Per-sample CHIP mutation counts and carrier status (samples without coverage are dropped)
 sample_burden <- id_all
-sample_burden$Freq      <- as.vector(table(factor(variants_all$ID, levels = sample_burden$ID)))
-sample_burden$Freq_chip <- as.vector(table(factor(variants_all$ID[which(variants_all$CHIP)], levels = sample_burden$ID)))
-sample_burden$Carrier      <- as.integer(sample_burden$Freq > 0)
+sample_burden$Freq_chip    <- as.vector(table(factor(variants_all$ID[which(variants_all$CHIP)], levels = sample_burden$ID)))
 sample_burden$Carrier_chip <- as.integer(sample_burden$Freq_chip > 0)
 sample_burden$Age_group_val <- AGE_CENTRES[as.integer(sample_burden$Age_group)]
 sample_burden <- merge(sample_burden, id_coverage, by = "ID")
@@ -293,7 +287,7 @@ save_pdf(sprintf("%s.pub.Fig1Aa.pdf", output_header), width = 4, height = 3, plo
 ))
 
 
-print("=== Step 3: Carrier Proportion by Age (Supp Fig 5, Fig 2A) ===")
+print("=== Step 3: CHIP Carrier Proportion by Age (Fig 2A) ===")
 # Carrier proportions per group x age bin; cells with <= MIN_CELL_SIZE samples are dropped
 carrier_age    <- summarise_carriers(sample_burden, c("Group", "Age_group_val"))
 carrier_age    <- carrier_age[carrier_age$Total > MIN_CELL_SIZE, ]
@@ -305,13 +299,6 @@ cat("\n--- CHIP carrier proportion ~ age bin x group (CTRL vs AD) ---\n")
 print(summary(lm(Prop_chip ~ Age_group_val * Group, data = droplevels(carrier_age[carrier_age$Group != "C", ]))))
 cat("\n--- CHIP carrier proportion ~ age bin x group (CTRL vs AD), e3/e3 only ---\n")
 print(summary(lm(Prop_chip ~ Age_group_val * Group, data = droplevels(carrier_age_33[carrier_age_33$Group != "C", ]))))
-
-save_pdf(sprintf("%s.pub.SuppFig5.pdf", output_header), width = 6, height = 3, plots = list(
-  plot_carrier_by_age(carrier_age,    "Prop", "Proportion of somatic mutation carriers",
-                      "Somatic mutation carrier proportion by age"),
-  plot_carrier_by_age(carrier_age_33, "Prop", "Proportion of somatic mutation carriers",
-                      "Somatic mutation carrier proportion by age - e3/e3 only")
-))
 
 save_pdf(sprintf("%s.pub.Fig2A.pdf", output_header), width = 6, height = 3, plots = list(
   plot_carrier_by_age(carrier_age,    "Prop_chip", "Proportion of CHIP mutation carriers",
