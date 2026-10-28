@@ -22,9 +22,9 @@ load_clinical_data <- function() {
   
   # Extract and standardize clinical attributes per sample ID
   raw_data %>% 
-    select(ID, `APOE genotype`, `Age (at blood collection)`, Sex, MMSE, Group, Batch) %>% 
+    dplyr::select(ID, `APOE genotype`, `Age (at blood collection)`, Sex, MMSE, Group, Batch) %>% 
     distinct() %>%
-    rename(
+    dplyr::rename(
       ApoE = `APOE genotype`,
       Age = `Age (at blood collection)`
     ) %>%
@@ -50,7 +50,7 @@ df_snv_wl$missense <- grepl('missense', df_snv_wl[, 2], fixed = TRUE)
 df_snv_wl$start <- NA
 df_snv_wl$start[grepl("p\\.[0-9]+", df_snv_wl[, 2])] <- as.numeric(gsub("-[0-9]+.*", "", gsub(".*p\\.", "", df_snv_wl[grepl("p\\.[0-9]+", df_snv_wl[, 2]), 2])))
 df_snv_wl$end <- NA
-df_snv_wl$end[grepl("p\\.[0-9]+", df_snv_wl[, 2])] <- as.numeric(gsub(")\\..*", "", gsub(".*p\\..+-", "", df_snv_wl[grepl("p\\.[0-9]+", df_snv_wl[, 2]), 2])))
+df_snv_wl$end[grepl("p\\.[0-9]+", df_snv_wl[, 2])] <- as.numeric(gsub("\\).*", "", gsub(".*p\\..+-", "", df_snv_wl[grepl("p\\.[0-9]+", df_snv_wl[, 2]), 2])))
 df_snv_wl$ex_start <- NA
 df_snv_wl$ex_start[df_snv_wl$Gene.name == "TET2"] <- 1482
 df_snv_wl$ex_end <- NA
@@ -128,7 +128,7 @@ df_indel_wl$frameshift <- grepl('Frameshift', df_indel_wl[, 2], fixed = TRUE)
 df_indel_wl$start <- NA
 df_indel_wl$start[grepl("p\\.[0-9]+", df_indel_wl[, 2])] <- as.numeric(gsub("-[0-9]+.*", "", gsub(".*p\\.", "", df_indel_wl[grepl("p\\.[0-9]+", df_indel_wl[, 2]), 2])))
 df_indel_wl$end <- NA
-df_indel_wl$end[grepl("p\\.[0-9]+", df_indel_wl[, 2])] <- as.numeric(gsub(")\\..*", "", gsub(".*p\\..+-", "", df_indel_wl[grepl("p\\.[0-9]+", df_indel_wl[, 2]), 2])))
+df_indel_wl$end[grepl("p\\.[0-9]+", df_indel_wl[, 2])] <- as.numeric(gsub("\\).*", "", gsub(".*p\\..+-", "", df_indel_wl[grepl("p\\.[0-9]+", df_indel_wl[, 2]), 2])))
 
 df_indel_wl[, 2] <- gsub("\\([0-9]+\\)", "", df_indel_wl[, 2])
 df_indel_wl[df_indel_wl$Gene.name == "TET2", "start"] <- NA
@@ -195,11 +195,11 @@ colnames(gene_anno_snv) <- c("Chr", "Pos", "Ref", "Alt", "Symbol", "Location", "
 # Load clinical metadata from SupplTable1 and merge with SNVs
 id_clinical <- load_clinical_data()
 merged_snv <- unique(merge(merge(gene_anno_snv, input_snv, by = c("Chr", "Pos", "Ref", "Alt")), id_clinical, by = "ID"))
-write.table(merged_snv[, which(colnames(merged_snv) != "Location")], file = sprintf("%s.merged.tsv", snv_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
+write.table(merged_snv, file = sprintf("%s.merged.tsv", snv_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
 
 # Filter SNVs by read depth and gnomAD population frequency thresholds
 merged_snv_filtered <- merged_snv[merged_snv$Ref_num + merged_snv$Alt_num >= 100 & merged_snv$Gnomad < 1e-4, ]
-write.table(merged_snv_filtered[, which(colnames(merged_snv_filtered) != "Location")], file = sprintf("%s.merged_filtered.tsv", snv_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
+write.table(merged_snv_filtered, file = sprintf("%s.merged_filtered.tsv", snv_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
 write.table(id_clinical, file = sprintf("%s.samples_filtered.tsv", snv_out_header), quote = FALSE, sep = "\t", row.names = FALSE)
 
 
