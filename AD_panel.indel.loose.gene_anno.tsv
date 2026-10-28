@@ -1,0 +1,61 @@
+10	115526303	115526305	AGC	-	PLEKHS1	intronic	NA	neutral
+11	108100006	108100006	A	-	ATM	exonic	frameshift deletion	deleterious
+11	108115670	108115670	-	C	ATM	exonic	frameshift insertion	deleterious
+11	108155079	108155082	TTGT	-	ATM	exonic	frameshift deletion	deleterious
+12	49437148	49437148	G	-	KMT2D	exonic	frameshift deletion	deleterious
+17	29527570	29527570	-	T	NF1	exonic	frameshift insertion	deleterious
+17	40490860	40490864	AAGTA	-	STAT3	intronic	NA	neutral
+17	58734157	58734157	-	CT	PPM1D	exonic	frameshift insertion	deleterious
+17	58740401	58740401	-	T	PPM1D	exonic	frameshift insertion	deleterious
+17	58740519	58740519	-	TGAAAAT	PPM1D	exonic	frameshift insertion	deleterious
+17	58740697	58740697	-	A	PPM1D	exonic	frameshift insertion	deleterious
+17	7577103	7577117	CAGGACAGGCACAAA	-	TP53	exonic	nonframeshift deletion	neutral
+19	3110178	3110178	C	-	GNA11	exonic	frameshift deletion	deleterious
+20	31022390	31022390	-	G	ASXL1	exonic	frameshift insertion	deleterious
+20	31022403	31022425	CACCACTGCCATAGAGAGGCGGC	-	ASXL1	exonic	frameshift deletion	deleterious
+20	31022547	31022547	-	G	ASXL1	exonic	frameshift insertion	deleterious
+20	31022739	31022739	G	-	ASXL1	exonic	frameshift deletion	deleterious
+20	31022768	31022768	-	G	ASXL1	exonic	frameshift insertion	deleterious
+20	31022928	31022928	C	-	ASXL1	exonic	frameshift deletion	deleterious
+20	31022978	31022978	-	A	ASXL1	exonic	frameshift insertion	deleterious
+20	31023097	31023097	-	A	ASXL1	exonic	frameshift insertion	deleterious
+20	31024342	31024342	C	-	ASXL1	exonic	frameshift deletion	deleterious
+2	198264898	198264902	AAAAC	-	SF3B1	intronic	NA	neutral
+22	23632481	23632481	-	T	BCR	intronic	NA	neutral
+22	32205629	32205629	-	A	DEPDC5	exonic	frameshift insertion	deleterious
+2	25457266	25457266	T	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25458595	25458595	A	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25463199	25463199	T	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25464536	25464536	G	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25466823	25466823	G	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25467135	25467135	G	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25467487	25467495	TCGTCGTAC	-	DNMT3A	exonic	nonframeshift deletion	neutral
+2	25468141	25468144	CCTC	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25469091	25469091	T	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25469559	25469559	G	-	DNMT3A	exonic	frameshift deletion	deleterious
+2	25469992	25469992	-	C	DNMT3A	exonic	frameshift insertion	deleterious
+3	37092174	37092176	TTC	-	MLH1	UTR3	NA	neutral
+3	47164813	47164831	GAGCTCCTATGGTAGCGAC	-	SETD2	exonic	frameshift deletion	deleterious
+4	106155512	106155512	A	-	TET2	exonic	frameshift deletion	deleterious
+4	106155755	106155755	-	AC	TET2	exonic	frameshift insertion	deleterious
+4	106156035	106156035	-	A	TET2	exonic	frameshift insertion	deleterious
+4	106156532	106156532	A	-	TET2	exonic	frameshift deletion	deleterious
+4	106157302	106157302	A	-	TET2	exonic	frameshift deletion	deleterious
+4	106157549	106157549	C	-	TET2	exonic	frameshift deletion	deleterious
+4	106157555	106157560	ATAGTC	-	TET2	exonic	nonframeshift deletion	neutral
+4	106158055	106158062	GGATGCAA	-	TET2	exonic	frameshift deletion	deleterious
+4	106162477	106162479	TCT	-	TET2-AS1	ncRNA_intronic	NA	neutral
+4	106180828	106180839	TCTTTTGGTTGT	-	TET2	exonic	nonframeshift deletion	neutral
+4	106180830	106180830	T	-	TET2	exonic	frameshift deletion	deleterious
+4	106190890	106190891	AA	-	TET2	exonic	frameshift deletion	deleterious
+4	106196499	106196499	C	-	TET2	exonic	frameshift deletion	deleterious
+4	106196516	106196516	-	CTTA	TET2	exonic	frameshift insertion	deleterious
+4	106196796	106196796	C	-	TET2	exonic	frameshift deletion	deleterious
+4	106197033	106197033	-	G	TET2	exonic	frameshift insertion	deleterious
+4	106197386	106197389	ATGA	-	TET2	exonic	frameshift deletion	deleterious
+4	1801538	1801541	AGGT	-	FGFR3	exonic	frameshift deletion	deleterious
+7	106524594	106524594	-	AT	PIK3CG	intronic	NA	neutral
+7	151919785	151919785	G	-	KMT2C	intronic	NA	neutral
+7	151962168	151962168	C	-	KMT2C	exonic	frameshift deletion	deleterious
+9	98270646	98270646	-	GCC	PTCH1	UTR5	NA	neutral
+X	123196885	123196885	T	-	STAG2	intronic	NA	neutral
